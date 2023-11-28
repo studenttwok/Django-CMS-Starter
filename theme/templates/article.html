@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{object.title}}{% endblock %}
+
+{% block content %}
+<div class="p-2">
+  <div class="text-center py-4 px-2 mb-2 border-2 border-slate-900 bg-white">
+    <div>{{ object.created_at }}</div>
+    <div class="text-2xl font-bold">{{ object.title }}</div>
+    <div>
+      {% for category in object.categories.all %}
+        <span class="inline-block first:border-l-0 border-l-2 pr-2 pl-2 border-blue-400">
+          <a href="{% url 'articles' %}?category={{category.slug}}">{{ category.name }}</a>
+        </span>
+      {% endfor %}
+      </div>
+  </div>
+
+  {% if object.cover_image != "" %}
+    <img class="my-2" src="{{object.get_cover_image_url}}" />
+  {% endif %}
+
+  <div class="bg-white border-2 p-8">
+    {% if object.summary != "" %}
+    <div class="border border-black p-4 text-sm">
+      <span class="block pb-2 font-blod">Summary</span>
+      <div class="">
+      {{ object.summary|safe }}
+      </div>
+    </div>
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+    {% endif %}
+
+    {% if object.youtube_video_id %}
+      <div class="flex justify-center">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{object.youtube_video_id}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+    {% endif %}
+
+    <div class="">
+      <p class="my-2 mb-8">Editor: <a href="{% url 'writer' id=object.created_by.id nickname=object.created_by.profile.nickname %}" target="_blank">{{ object.created_by.profile.nickname }}</a></p>
+      <p>{{ object.content|safe }}</p>
+    </div>
+
+    {% if object.reference_url %}
+      <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+      <div>Reference: <a href="{{ object.reference_url }}" target="_blank">{{ object.reference_url }}</a></div>
+    {% endif %}
+
+    {% if object.images.count > 0 %}
+      <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+      <div class="flex flex-col mt-2">
+        {% for image in object.images.all %}
+        <div class="flex flex-col justify-center border bg-green-100  rounded-md p-2 mb-4 align-middle">
+          <img class="self-center w-max-300 h-max-300 object-cover m-2" src="/media/{{image.image}}" />
+          <div class="text-sm self-center">{{image.caption}}</div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+  
+  <div class="flex flex-col gap-y-4 border bg-green-50 rounded-md p-4">
+    <h2 class="text-xl font-bold">Article tags</h2>  
+    {% if tags %}
+      {% for tag in tags %}
+        <a href="{%url 'articles'%}?tag={{tag.name}}" class="">{{ tag.name }}</a>
+      {% endfor %}
+    {% else %}
+      <div>No tags</div>
+    {% endif %}
+  </div>
+{% endblock %}

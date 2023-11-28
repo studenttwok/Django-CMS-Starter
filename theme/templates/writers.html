@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Writers{% endblock %}
+
+{% block content %}
+<div class="p-2">
+  <h1 class="text-2xl font-bold pb-4">Writers ({{num_of_writers}})</h1>
+
+  {% if object_list %}
+    {% for object in object_list %}
+      <div class="mb-4 flex flex-row items-center">
+        {% if object.profile.avatar != "" %}
+          <img src="/media/{{ object.profile.avatar }}" class="w-1/4 h-1/4 object-cover mx-2 rounded-md shadow-md">
+        {% else %}
+          <img src="{% static 'images/no_image.png' %}"  class="w-1/4 h-1/4 object-cover mx-2 rounded-md shadow-md">
+        {% endif %}
+        <div class="flex flex-col">
+          <div class="text-3xl"><a href="{% url 'writer' id=object.profile.id nickname=object.profile.nickname %}">{{ object.profile.nickname }}</a></div>
+          <span class="block pr-2 pl-2 ">{{ object.profile.title }}</span>
+          <span class="block pr-2 pl-2 ">{{ object.profile.location }}</span>
+          <span class="block pr-2 pl-2 pt-2 "><a href="{% url 'articles'%}?writer={{object.profile.nickname}}">View my articles</a></span>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No writers found.</p>
+  {% endif %}
+
+  <div class="pt-4">
+    {% if page_number|add:-1 > 0 %}
+      <a href="?page={{ page_number|add:-1 }}&q={{q}}">Previous</a>
+    {% endif %}
+    Page {{page_number}} of {{total_page_number}}
+    {% if page_number|add:1 <= total_page_number %}
+      <a href="?page={{ page_number|add:1 }}&q={{q}}">Next</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{%block sidebar %}
+{% endblock %}

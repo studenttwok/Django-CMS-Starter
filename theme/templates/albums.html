@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Albums{% endblock %}
+
+{% block content %}
+<div class="p-2">
+  <h1 class="text-2xl font-bold pb-4">Albums ({{num_of_albums}})</h1>
+
+  {% if object_list %}
+    {% for object in object_list %}
+      <div class="mb-4 flex flex-row items-center">
+        {% if object.cover_image != "" %}
+          <img src="{{object.get_cover_image_url}}" class="w-1/4 h-1/4 object-cover mx-2 rounded-md shadow-md">
+        {% else %}
+          <img src="{% static 'images/no_cover_image.jpg' %}"  class="w-1/4 h-1/4 object-cover mx-2 rounded-md shadow-md">
+        {% endif %}
+        <div class="flex flex-col">
+          <div class="text-3xl"><a href="{% url "album" id=object.id slug=object.slug %}">{{ object.name }}</a></div>
+          <span class="block">{{ object.created_by.profile.nickname }} @ {{ object.created_at }}</span>
+          {% if object.short_description %}
+            <span class="block border p-2 bg-white rounded-md">{{ object.short_description|safe }}</span>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No Albums found</p>
+  {% endif %}
+
+  <div class="pt-4">
+    {% if page_number|add:-1 > 0 %}
+      <a href="?page={{ page_number|add:-1 }}&q={{q}}">Previous</a>
+    {% endif %}
+    Page {{page_number}} of {{total_page_number}}
+    {% if page_number|add:1 <= total_page_number %}
+      <a href="?page={{ page_number|add:1 }}&q={{q}}">Next</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{%block sidebar %}
+{% endblock %}

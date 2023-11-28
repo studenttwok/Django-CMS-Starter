@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Articles{% endblock %}
+
+{% block content %}
+<div class="p-2">
+  <h1 class="text-2xl font-bold pb-4">Articles ({{num_of_articles}})</h1>
+  {% if q %}
+    <h2 class="text-xl font-bold pb-4">Filter by Keyword - {{q}}</h2>
+  {% endif %}
+  {% if writer %}
+    <h2 class="text-xl font-bold pb-4">Filter by writer - {{writer}}</h2>
+  {% endif %}
+  {% if tag %}
+    <h2 class="text-xl font-bold pb-4">Filter by tag - {{tag}}</h2>
+  {% endif %}
+  {% if articlecategory %}
+    <h2 class="text-xl font-bold pb-4">Filter by category - {{articlecategory.name}}</h2>
+  {% endif %}
+
+  {% if articlecategory.cover_image or articlecategory.description %}  
+  <div class="p-4 mb-8 border border-slate-900 bg-white">
+    {% if articlecategory.cover_image %}
+      <img src="{{ articlecategory.get_cover_image_url }}" class="w-full object-cover rounded-md shadow-md mb-6">
+    {% endif %}
+    {% if articlecategory.description %}
+      <div class="pb-4">{{articlecategory.description|safe}}</div>
+    {% endif %}
+  </div>
+  <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+  {% endif %}
+
+  {% if object_list %}
+    {% for object in object_list %}
+      <div class="mb-4 flex flex-row items-center">
+        {% if object.cover_image != "" %}
+          <img src="{{object.get_cover_image_url}}" class="w-1/4 h-1/4 object-cover mx-2 rounded-md shadow-md">
+        {% else %}
+          <img src="{% static 'images/no_cover_image.jpg' %}"  class="w-1/4 h-1/4 object-cover mx-2 rounded-md shadow-md">
+        {% endif %}
+        <div class="flex flex-col">
+          <div class="text-3xl"><a href="{% url "article" id=object.id slug=object.slug %}">{{ object.title }}</a></div>
+          <div>
+          {% for category in object.categories.all %}
+            <span class="inline-block border-l-2 pr-2 pl-2 border-blue-400">{{ category.name }}</span>
+          {% endfor %}
+          </div>
+          <span class="block">{{ object.created_by.profile.nickname }} @ {{ object.created_at }}</span>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No matching articles found</p>
+  {% endif %}
+
+  <div class="pt-4">
+    {% if page_number|add:-1 > 0 %}
+      <a href="?page={{ page_number|add:-1 }}&q={{q}}">Previous</a>
+    {% endif %}
+    Page {{page_number}} of {{total_page_number}}
+    {% if page_number|add:1 <= total_page_number %}
+      <a href="?page={{ page_number|add:1 }}&q={{q}}">Next</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{%block sidebar %}
+<div class="flex flex-col gap-y-4 border bg-green-50 rounded-md p-4 mb-4">
+  <h2 class="text-xl font-bold">Categories</h2>
+  {% for category in all_articlecategories%}
+    <div>
+      <a href="{% url "articles" %}?category={{category.slug}}">{{category.name}} ({{category.article_count}})</a>
+    </div>
+  {%endfor%}
+</div>
+<div class="flex flex-col gap-y-4 border bg-green-50 rounded-md p-4 mb-4">
+  <h2 class="text-xl font-bold">Tags</h2>
+  {% for tag in all_tags%}
+    <div>
+      <a href="{% url "articles" %}?tag={{tag.name}}">{{tag.name}} ({{tag.article_count}})</a>
+    </div>
+  {%endfor%}
+</div>
+
+{% endblock %}

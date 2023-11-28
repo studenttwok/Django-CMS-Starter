@@ -1,0 +1,7 @@
+# db.cnf
+# More settings can be found at cms_starter/settings.py
+[client]
+database = cms
+user = your_db_user
+password = your_db_password
+default-character-set = utf8
