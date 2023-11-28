@@ -1,6 +1,9 @@
 # Intro
 This is a Simple yet highly customisable CMS starter project, built with Django 4.2 and Python 3.10. Mainly focusing on making things easy enough to be extended, but also being able to provide an immediate CMS experience without the need for huge modification. Feel free to use it as a starting point.
 
+# Live site demo
+[Whatever Boardgame Note](https://whateverboardgame.com/)
+
 # Features
 * Build with the concept of Page, Post, Album and Writer
 * Make use of Django's admin panel for content management
@@ -64,7 +67,7 @@ If that is not what you need, feel free to modify the links in theme/templates/b
 
 4. Create a group named 'Writer' for writers. You can grant every permissions that start with cms, except 'cms | pages', 'cms | page image' and 'cms | profile'. For 'cms | profile', you can grant 'cms | profile | Can change profile' and 'cms | profile | Can view profile'. A writer can only see and modify his profile in the admin panel.
 
-5. Create accounts for the writers in the 'User' section of the admin panel. Don't forget to add them to the 'Writer' group.
+5. Create accounts for the writers in the 'User' section of the admin panel. Don't forget to add them to the 'Writer' group. Also please check 'Staff status' in the panel or they woun't be able to login to the admin portal.
 
 6. Writers can log in to the admin panel with their account and perform a limited number of actions. They can modify their profile and password in the admin panel as well.
 
