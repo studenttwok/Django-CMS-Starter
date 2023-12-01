@@ -87,6 +87,11 @@ Instead of starting the tailwind CSS building server, you now build the CSS by u
 python manager.py tailwind build
 ```
 
+Copy the static files to the STATIC_ROOT
+```
+python manager.py collectstatic
+```
+
 The compiled assets should be ready in the STATIC_ROOT that you have specified in cms_starter/settings.py.
 
 Finally, instead of starting the development server in step 10, start the gunicorn production server in the project root.
