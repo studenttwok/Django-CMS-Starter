@@ -31,27 +31,27 @@ pip install -r requirements.txt
 7. Execute the following command to create the necessary tailwind CSS assets
 ```code
 python manage.py tailwind init
-python manager.py tailwind install
+python manage.py tailwind install
 ```
 8. Create DB Tables. Check your db setting in db.cnf if you encounter errors.
 ```code
-python manager.py makemigrations
-python manager.py migrate
+python manage.py makemigrations
+python manage.py migrate
 ```
 9. Start the Tailwind auto build services
 ```code
-python manager.py tailwind start
+python manage.py tailwind start
 ```
 
 10. Open a new terminal, switch to repo, start the python venv (refer to step 3), and execute the following command to start the Django development server
 ```code
-python manager.py runserver
+python manage.py runserver
 ```
 
 # Data Preparation
 1. Create an admin account
 ```code
-python manager.py createsuperuser
+python manage.py createsuperuser
 ```
 2. Use your admin account to login to the system. The default admin panel is located at http://localhost:8000/admin/
 
@@ -84,12 +84,12 @@ Setup the python env(venv) just like how you did in the Setup procedures.
 
 Instead of starting the tailwind CSS building server, you now build the CSS by using the following command
 ```code
-python manager.py tailwind build
+python manage.py tailwind build
 ```
 
 Copy the static files to the STATIC_ROOT
 ```
-python manager.py collectstatic
+python manage.py collectstatic
 ```
 
 The compiled assets should be ready in the STATIC_ROOT that you have specified in cms_starter/settings.py.
